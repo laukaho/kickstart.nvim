@@ -246,6 +246,37 @@ rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  -- My extra added plugins
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+      'MunifTanjim/nui.nvim',
+      -- Optional image support for file preview: See `# Preview Mode` for more information.
+      -- {"3rd/image.nvim", opts = {}},
+      -- OR use snacks.nvim's image module:
+      -- "folke/snacks.nvim",
+    },
+    keys = {
+      {
+        '<leader>e',
+        -- This function directly executes the Neotree command
+        function()
+          vim.cmd 'Neotree toggle' -- or vim.cmd("Neotree") for just opening
+        end,
+        desc = 'Toggle NeoTree',
+      },
+    },
+    lazy = false, -- neo-tree will lazily load itself
+    ---@module "neo-tree"
+    ---@type neotree.Config?
+    opts = {
+      -- add options here
+    },
+  },
+
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
 
