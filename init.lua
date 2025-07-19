@@ -98,6 +98,10 @@ vim.g.have_nerd_font = false
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.expandtab = true
+
 -- Make line numbers default
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
@@ -247,6 +251,74 @@ rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- My extra added plugins
+  {
+    'nvim-flutter/flutter-tools.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'stevearc/dressing.nvim', -- Optional, but recommended for better UI prompts
+      'mfussenegger/nvim-dap', -- Required for debugging (see below)
+      'rcarriga/nvim-dap-ui', -- Recommended for a debugging UI (see below)
+    },
+    ft = 'dart', -- Only load when opening Dart files
+    config = function()
+      require('flutter-tools').setup {
+        -- Customize your settings here. Some common ones:
+        decorations = {
+          statusline = {
+            app_version = true,
+            device = true,
+          },
+          widget_guides = {
+            enabled = true,
+            border = 'single', -- or 'none', 'double', 'rounded'
+            line_padding = 1,
+            characters = {
+              -- Customize characters or disable them
+            },
+          },
+          -- closing_tags = {
+          --   enabled = true,
+          --   highlight = 'Comment',
+          -- },
+        },
+        debugger = {
+          enabled = true,
+          -- You can define custom configurations for different targets/flavors here
+          -- register_configurations = function(configs)
+          --   require("dap").configurations.dart = {
+          --     {
+          --       type = "dart",
+          --       request = "launch",
+          --       name = "Launch App (Web)",
+          --       program = "${workspaceFolder}/lib/main.dart",
+          --       args = { "-d", "web" },
+          --     },
+          --   }
+          --   return configs
+          -- end,
+        },
+        -- For hot reload on save (optional, flutter-tools can do this)
+        -- hot_reload_on_save = true, -- Check flutter-tools docs for this option, it might be off by default
+        -- See the official documentation for all options:
+        -- https://github.com/nvim-flutter/flutter-tools.nvim#full-configuration
+      }
+
+      -- Basic keymaps for flutter-tools (add these to your keymaps or within a dedicated file)
+      vim.keymap.set('n', '<leader>fr', '<cmd>FlutterRun<CR>', { desc = 'Flutter: Run' })
+      vim.keymap.set('n', '<leader>fd', '<cmd>FlutterDebug<CR>', { desc = 'Flutter: Debug' })
+      vim.keymap.set('n', '<leader>fx', '<cmd>FlutterQuit<CR>', { desc = 'Flutter: Quit' })
+      vim.keymap.set('n', '<leader>fR', '<cmd>FlutterReload<CR>', { desc = 'Flutter: Hot Reload' })
+      vim.keymap.set('n', '<leader>fS', '<cmd>FlutterRestart<CR>', { desc = 'Flutter: Hot Restart' })
+      vim.keymap.set('n', '<leader>fv', '<cmd>FlutterDevTools<CR>', { desc = 'Flutter: Open DevTools' })
+      vim.keymap.set('n', '<leader>fo', '<cmd>FlutterOutlineToggle<CR>', { desc = 'Flutter: Toggle Outline' })
+      vim.keymap.set('n', '<leader>f?', '<cmd>FlutterDevices<CR>', { desc = 'Flutter: Select Device' })
+
+      -- Important: If you want auto-formatting on save for Dart, ensure conform.nvim is set up for it.
+      -- (Your current conform.nvim setup already includes 'lua = { "stylua" }'.
+      -- You might want to add 'dart = { "dart_format" }' or similar if Dart provides a dedicated formatter for conform.)
+      -- `flutter-tools.nvim` typically handles Dart formatting via LSP on save if configured.
+    end,
+  },
   {
     'nvim-neo-tree/neo-tree.nvim',
     branch = 'v3.x',
