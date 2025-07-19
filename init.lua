@@ -297,6 +297,17 @@ require('lazy').setup({
           --   return configs
           -- end,
         },
+        lsp = {
+          settings = {
+            -- These are often important for hints and features
+            showtodos = true,
+            completefunctioncalls = true,
+            renameFilesWithClasses = 'prompt', -- "always"
+            enableSnippets = true,
+            updateImportsOnRename = true,
+            -- ... other settings from flutter-tools documentation
+          },
+        },
         -- For hot reload on save (optional, flutter-tools can do this)
         -- hot_reload_on_save = true, -- Check flutter-tools docs for this option, it might be off by default
         -- See the official documentation for all options:
