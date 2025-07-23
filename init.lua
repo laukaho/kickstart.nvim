@@ -342,6 +342,27 @@ require('lazy').setup({
       -- `flutter-tools.nvim` typically handles Dart formatting via LSP on save if configured.
     end,
   },
+  -- AI tools
+  {
+    'github/copilot.vim',
+    event = 'VimEnter', -- Still good for general loading
+    config = function()
+      -- These global settings should still be set directly
+      vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
+        expr = true,
+        replace_keycodes = false,
+      })
+      vim.keymap.set('i', '<C-L>', '<Plug>(copilot-accept-word)')
+      vim.g.copilot_no_tab_map = true
+      vim.g.copilot_assume_mapped = true
+    end,
+    -- Define the keymaps here within the 'keys' table
+    keys = {
+      -- Optional: Toggle Copilot enable/disable (these are normal mode, so simple string commands are fine)
+      { '<leader>ct', ':Copilot disable<CR>', mode = 'n', desc = 'Copilot: Toggle (Disable)' },
+      { '<leader>ce', ':Copilot enable<CR>', mode = 'n', desc = 'Copilot: Toggle (Enable)' },
+    },
+  },
   {
     'tpope/vim-commentary',
   },
@@ -941,6 +962,7 @@ require('lazy').setup({
         opts = {},
       },
       'folke/lazydev.nvim',
+      'github/copilot.vim',
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -989,6 +1011,11 @@ require('lazy').setup({
         default = { 'lsp', 'path', 'snippets', 'lazydev' },
         providers = {
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
+          copilot = {
+            module = 'copilot_cmp', -- This is the integration module for copilot.vim
+            priority = 1, -- Lower priority so LSP/snippets come first usually
+            max_item_count = 5, -- Limit number of copilot suggestions shown
+          },
         },
       },
 
