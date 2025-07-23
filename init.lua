@@ -180,6 +180,18 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+-- Black hole register keymap
+-- Map <leader>dx to delete current character under cursor to black hole register
+vim.keymap.set('n', '<leader>dx', '"_x', { desc = 'Delete character to black hole register' })
+
+-- Map <leader>dd to delete current line to black hole register
+vim.keymap.set('n', '<leader>dd', '"_dd', { desc = 'Delete line to black hole register' })
+
+-- Map <leader>D to delete from cursor to end of line to black hole register
+vim.keymap.set('n', '<leader>D', '"_D', { desc = 'Delete to end of line to black hole register' })
+
+-- In visual mode, map <leader>d to delete selected text to black hole register
+vim.keymap.set('v', '<leader>d', '"_d', { desc = 'Delete selection to black hole register' })
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
@@ -329,6 +341,9 @@ require('lazy').setup({
       -- You might want to add 'dart = { "dart_format" }' or similar if Dart provides a dedicated formatter for conform.)
       -- `flutter-tools.nvim` typically handles Dart formatting via LSP on save if configured.
     end,
+  },
+  {
+    'tpope/vim-commentary',
   },
   {
     'mg979/vim-visual-multi',
