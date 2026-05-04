@@ -342,6 +342,20 @@ require('lazy').setup({
       -- `flutter-tools.nvim` typically handles Dart formatting via LSP on save if configured.
     end,
   },
+
+  { -- Magit-like git interface
+    'NeogitOrg/neogit',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'sindrets/diffview.nvim',
+    },
+    config = function()
+      local neogit = require 'neogit'
+      neogit.setup {}
+      vim.keymap.set('n', '<leader>gg', neogit.open, { desc = 'Open [N]eogit' })
+    end,
+  },
+
   -- AI tools
   {
     'github/copilot.vim',
